@@ -1,7 +1,11 @@
 <template>
   <div class="home">
       <h1>Bienvenido a la guarida de Rick &amp; Morty</h1>
-      <input type="text" class="search" value='' placeholder="Ingresa el nombre de tu personaje de la serie a buscar" />
+      <input type="text" id="form-search" class="search" placeholder="Ingresa el nombre de tu personaje de la serie a buscar" />
+      <button class="btn-src" id="btn-search" v-on:click="fetchDataCharacters">Buscar</button>
+      <div v-for="character of characters" v-bind:key="character.id">
+          {{character}}
+      </div>
   </div>
 </template>
 <script>
@@ -9,23 +13,37 @@
 
   export default {
     methods: {
-     // getCharacters () { 
-        // fetch('http://example.com/movies.json')
-            // .then(response => response.json())
-            // .then(data => console.log(data));
-        // return console.log(data); 
-      // },
+      // getAllData(){
+      //   for (var i =0;i<32;i++){
+      //     console.log(i);
+      //   }
+      // }
+      fetchDataCharacters(){
+        console.log("desde fetch data characters")
+         axios.get("https://rickandmortyapi.com/api/character/")
+                          .then(res => {
+                            this.characters = res.data.results
+                            //console.log(this.characters[0])
+                          }).catch(err =>{
+                            console.log(err)
+                          })
+      }
     },
     watch: {
     },
     created () {
-
+      //this.getAllData();
       axios.get("https://rickandmortyapi.com/api/character/").then((result) => {
-        console.log(result.data);
-      })
+        var info = result.data.info;
+        var results = result.data.results;
+        console.log(info);
+        console.log(results);
+        
+      }).catch(error => console.log(error))
     },
     data () {
       return {
+        characters:[]
       }
     },
     name: 'Search',
@@ -37,12 +55,10 @@
   <style scoped lang="stylus">
       .home
           max-width 100%
-          background silver
           border 1px solid black
           margin 0
           padding 0
           align-content center
-          height 100vh
       h1 
           font-size 0.9em
       .search
@@ -51,5 +67,20 @@
       input.search
           border 1px solid black
           border-radius 30px
-          padding 1%
+          padding 10px
+          margin-bottom 1% 
+          float center
+      .btn-src
+        border-radius 30px
+        text-align center
+        margin-top 10%
+        padding 10px
+        transform scale(0.87)
+      @media (min-width: 300px)
+        .btn-src
+          width 70%
+          margin 0 auto !important
+        @media screen and (min-width: 600px)
+          .btn-src
+            width 25%
   </style>

@@ -22,4 +22,6 @@ export default {
 <style lang="stylus">
   .logo
     max-width 20%
+  body 
+    font-family Roboto
 </style>
